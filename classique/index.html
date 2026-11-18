@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 2 · Introduction à la Gestion Mentale — version classique</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+:root{--line:#e3ddd5;--muted:#5d7178;--card:#fff}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-size:17px;line-height:1.6}
+.app{display:grid;grid-template-columns:320px 1fr;min-height:100%}
+
+/* ---------- Colonne de navigation ---------- */
+.side{background:var(--card);border-right:1px solid var(--line);padding:28px 24px 24px;display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100vh;overflow:auto}
+.side .logo{width:150px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--teal)}
+.side h1{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;letter-spacing:-.01em;margin-top:8px}
+.meter{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter i{flex:1;height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.meter i b{display:block;height:100%;width:0;background:var(--teal);border-radius:4px;transition:width .6s var(--ease)}
+.toc{display:flex;flex-direction:column;gap:2px;margin:0 -10px}
+.toc button{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 10px;border-radius:10px;transition:background .2s}
+.toc button:hover{background:#f4f1ec}
+.toc .n{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--muted);transition:.3s}
+.toc .t{font-weight:500;font-size:15.5px;line-height:1.25}
+.toc .d{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.toc [aria-current="step"]{background:#eef5f7}
+.toc [aria-current="step"] .n{border-color:var(--teal);background:var(--teal);color:#fff}
+.toc .done .n{border-color:var(--teal);color:var(--teal)}
+.toc .done .n::before{content:"";width:10px;height:5px;border-left:2px solid;border-bottom:2px solid;transform:rotate(-45deg) translate(1px,-1px)}
+.toc .done .n span{display:none}
+.side .back{margin-top:auto;font-size:13.5px;color:var(--muted);text-decoration:none;display:flex;gap:8px;align-items:center}
+.side .back:hover{color:var(--teal)}
+
+/* ---------- Zone de contenu ---------- */
+.main{display:flex;flex-direction:column;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px clamp(20px,4vw,56px);font-size:13.5px;color:var(--muted)}
+.top .crumb b{color:var(--ink);font-weight:600}
+.stage{flex:1;padding:8px clamp(20px,4vw,56px) 32px;display:flex}
+.screen{display:none;width:100%;max-width:1080px;margin:0 auto;animation:in .5s var(--ease)}
+.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.screen>header{margin-bottom:clamp(20px,3vw,36px)}
+.screen h2{font-family:var(--serif);font-weight:450;font-size:clamp(30px,3.6vw,46px);line-height:1.08;letter-spacing:-.02em;margin-top:10px;max-width:20ch;text-wrap:balance}
+/* Clin d'œil au surlignage abricot du PowerPoint */
+.screen h2 em{font-style:normal;background:linear-gradient(transparent 62%,var(--apricot) 62%)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(20px,4vw,56px);border-top:1px solid var(--line);background:rgba(249,247,245,.9);backdrop-filter:blur(8px);position:sticky;bottom:0}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font-weight:600;font-size:15px;border:1.5px solid var(--line);background:var(--card);transition:.2s var(--ease)}
+.btn:hover:not(:disabled){border-color:var(--teal);color:var(--teal)}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.primary:hover:not(:disabled){background:var(--teal-deep);border-color:var(--teal-deep);color:#fff}
+.btn:disabled{opacity:.35;cursor:default}
+.btn svg{width:16px;height:16px}
+
+/* Écran 1 : bienvenue */
+.welcome{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.who{padding:22px;position:sticky;top:20px}
+.who .portrait{aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--mist)}
+.who .portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;transform:scale(1.25)}
+.who strong{display:block;font-family:var(--serif);font-size:21px;font-weight:500;margin-top:16px}
+.who span{font-size:14px;color:var(--muted);line-height:1.4;display:block;margin-top:4px}
+.letter p{max-width:62ch;margin-bottom:1.05em}
+.letter p:first-child{font-family:var(--serif);font-size:clamp(20px,2vw,24px);line-height:1.35;color:var(--teal-deep)}
+.letter .sign{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--teal-deep);margin-top:20px}
+
+/* Vidéo */
+.video{overflow:hidden}
+.video video{width:100%;aspect-ratio:16/9;background:#000;object-fit:cover}
+.video .cap{min-height:58px;padding:14px 18px;font-size:15px;color:var(--muted);display:flex;align-items:center;gap:10px;border-top:1px solid var(--line)}
+.video .cap::before{content:"CC";font-size:10px;font-weight:700;letter-spacing:.06em;border:1.5px solid currentColor;border-radius:4px;padding:1px 4px;opacity:.6;flex:none}
+.video .cap.on{color:var(--ink)}
+
+/* Écran 2 : objectifs */
+.two{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(20px,3vw,40px);align-items:start}
+.goals{padding:clamp(22px,2.6vw,34px);background:#fff url("../assets/media/cible.jpg") right -90px bottom -110px/330px no-repeat;min-height:100%}
+.goals h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:18px}
+.goals li{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:center;padding:16px 0;border-top:1px solid var(--line);font-family:var(--serif);font-size:clamp(19px,1.8vw,23px);line-height:1.25;max-width:20ch}
+.goals li b{width:44px;height:44px;border-radius:50%;background:var(--apricot);display:grid;place-items:center;font-family:var(--sans);font-size:16px}
+.goals{padding-bottom:150px}
+
+/* Écran 3 : plan */
+.plan li{border-top:1px solid var(--line)}
+.plan li:first-child{border-top:0}
+.plan button{display:grid;grid-template-columns:34px 1fr 18px;gap:14px;align-items:center;width:100%;text-align:left;padding:15px 20px;transition:background .25s}
+.plan button:hover{background:#faf8f5}
+.plan .n{font-size:13px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.plan .t{font-weight:600;font-size:16.5px;line-height:1.3}
+.plan .chev{width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:.3s;justify-self:center}
+.plan .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+.plan .more>div{overflow:hidden}
+.plan .more p{padding:0 20px 16px 68px;font-size:15px;color:var(--muted);max-width:56ch}
+.plan .more p+p{margin-top:-8px}
+.plan li.open .more{grid-template-rows:1fr}
+.plan li.open .chev{transform:rotate(225deg)}
+.plan li.live{background:#eef5f7}
+.plan li.live .n{color:var(--teal)}
+.plan li.live .n::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);margin-left:6px;vertical-align:middle;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.2}}
+.hint{font-size:13.5px;color:var(--muted);margin-top:12px}
+
+/* Écran 4 : repères */
+.quiz{display:grid;gap:18px;max-width:760px}
+.q{padding:24px clamp(18px,2.4vw,30px)}
+.q legend{font-family:var(--serif);font-size:21px;line-height:1.3;padding:0;margin-bottom:14px;float:left;width:100%}
+.q fieldset{border:0;padding:0;margin:0}
+.q label{clear:both;display:flex;gap:12px;align-items:center;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;margin-top:8px;cursor:pointer;transition:.2s;font-size:16px}
+.q label:hover{border-color:var(--teal)}
+.q input{accent-color:var(--teal);width:18px;height:18px;flex:none}
+.q label.ok{border-color:#2f8f6b;background:#edf7f2}
+.q label.ko{border-color:#c9573f;background:#fbefec}
+.q .fb{font-size:15px;margin-top:14px;padding-left:14px;border-left:3px solid var(--teal);color:var(--teal-deep);display:none}
+.q.answered .fb{display:block}
+.done-box{padding:26px 30px;display:none;align-items:center;gap:20px;background:var(--teal);color:#fff;border-color:var(--teal)}
+.done-box.on{display:flex}
+.done-box strong{font-family:var(--serif);font-weight:450;font-size:24px;line-height:1.2;display:block}
+.done-box span{opacity:.85;font-size:15px}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;padding:18px 20px;gap:14px;border-right:0;border-bottom:1px solid var(--line)}
+  .side .logo{width:110px}.side h1{font-size:21px}
+  .toc{flex-direction:row;overflow:auto;margin:0;gap:6px}
+  .toc button{grid-template-columns:30px;padding:4px}.toc .t,.toc .d{display:none}
+  .side .back{margin:0}
+  .welcome,.two{grid-template-columns:1fr}
+  .who{position:static;display:grid;grid-template-columns:84px 1fr;gap:4px 16px;align-items:center}
+  .who .portrait{grid-row:span 2}.who strong{margin:0;align-self:end}.who span{align-self:start}
+  .btn{padding:12px 16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a href="../index.html" aria-label="Retour au choix de version"><img class="logo" src="../assets/logo.svg" alt="IF Paris — Initiative &amp; Formation"></a>
+    <div>
+      <p class="eyebrow">Module 2</p>
+      <h1>Introduction à la Gestion Mentale</h1>
+    </div>
+    <div class="meter" aria-live="polite"><i><b id="bar"></b></i><span id="count"></span></div>
+    <nav aria-label="Écrans du module"><ol class="toc" id="toc"></ol></nav>
+    <a class="back" href="../index.html">← Les trois versions</a>
+  </aside>
+
+  <div class="main">
+    <div class="top"><span class="crumb">Formation Gestion Mentale · <b>Module 2</b></span><span id="pos"></span></div>
+
+    <main class="stage">
+      <!-- 1. Bienvenue -->
+      <section class="screen" data-title="Bienvenue" data-dur="2 min">
+        <header><p class="eyebrow">Mot d’accueil</p><h2>Bienvenue dans votre premier module <em>en autonomie</em></h2></header>
+        <div class="welcome">
+          <div class="who card">
+            <div class="portrait"><img src="../assets/media/objectifs-poster.jpg" alt="Portrait d’Isabelle Grouffal"></div>
+            <strong>Isabelle Grouffal</strong>
+            <span>Formatrice en Gestion Mentale, fondatrice d’IFParis</span>
+          </div>
+          <div class="letter" id="letter"></div>
+        </div>
+      </section>
+
+      <!-- 2. Objectifs -->
+      <section class="screen" data-title="Objectifs du module" data-dur="15 s">
+        <header><p class="eyebrow">Écran 2</p><h2>Les <em>objectifs</em> du module</h2></header>
+        <div class="two">
+          <div class="video card">
+            <video id="v1" controls playsinline preload="metadata" poster="../assets/media/objectifs-poster.jpg" src="../assets/media/objectifs.mp4"></video>
+            <p class="cap" id="c1" aria-live="off"></p>
+          </div>
+          <div class="goals card"><h3>À l’issue de ce module, vous saurez</h3><ol id="goals"></ol></div>
+        </div>
+      </section>
+
+      <!-- 3. Plan -->
+      <section class="screen" data-title="Plan du module" data-dur="1 min">
+        <header><p class="eyebrow">Écran 3</p><h2>Le <em>plan</em> du module, en six étapes</h2></header>
+        <div class="two">
+          <div>
+            <div class="video card">
+              <video id="v2" controls playsinline preload="metadata" poster="../assets/media/plan-poster.jpg" src="../assets/media/plan.mp4"></video>
+              <p class="cap" id="c2" aria-live="off"></p>
+            </div>
+            <p class="hint">Les étapes s’éclairent au fil de la vidéo. Cliquez sur une étape pour en lire l’aperçu.</p>
+          </div>
+          <ol class="plan card" id="plan"></ol>
+        </div>
+      </section>
+
+      <!-- 4. Repères -->
+      <section class="screen" data-title="Vos repères" data-dur="2 min">
+        <header><p class="eyebrow">Avant de commencer</p><h2>Trois <em>repères</em> à vérifier</h2></header>
+        <div class="quiz" id="quiz"></div>
+      </section>
+    </main>
+
+    <div class="foot">
+      <button class="btn" id="prev"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3 5 8l5 5"/></svg>Précédent</button>
+      <button class="btn primary" id="next">Suivant<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 3 5 5-5 5"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/content.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var screens = [].slice.call(document.querySelectorAll(".screen"));
+  var seen = {}, cur = 0;
+
+  // Contenus
+  $("#letter").innerHTML = IFP.bienvenue.map(function (p) { return "<p>" + p + "</p>"; }).join("") + '<p class="sign">Isabelle Grouffal</p>';
+  $("#goals").innerHTML = IFP.objectifs.map(function (o, i) { return "<li><b>" + (i + 1) + "</b><span>" + o + "</span></li>"; }).join("");
+  $("#plan").innerHTML = IFP.plan.map(function (s, i) {
+    return '<li><button aria-expanded="false"><span class="n">0' + (i + 1) + '</span><span class="t">' + s.titre +
+      '</span><i class="chev"></i></button><div class="more"><div><p>' + s.apercu + "</p><p>" + s.detail + "</p></div></div></li>";
+  }).join("");
+  var steps = [].slice.call(document.querySelectorAll("#plan li"));
+  steps.forEach(function (li) {
+    li.querySelector("button").addEventListener("click", function () {
+      var o = li.classList.toggle("open"); this.setAttribute("aria-expanded", o);
+    });
+  });
+
+  // Vidéos : sous-titres + étapes synchronisées
+  IFP.captions($("#v1"), $("#c1"), IFP.cues.objectifs);
+  IFP.captions($("#v2"), $("#c2"), IFP.cues.plan, function (t, playing) {
+    var k = playing ? IFP.stepAt(t) : -1;
+    steps.forEach(function (li, i) { li.classList.toggle("live", i === k); });
+  });
+
+  // Questions de repérage
+  var Q = [
+    { q: "La Gestion Mentale, c’est…", a: ["Une méthode pour « gérer » son mental", "La pédagogie des gestes mentaux", "Un test de personnalité"], ok: 1,
+      fb: "La Gestion Mentale est « la pédagogie des gestes mentaux, et non une manière de “gérer” son mental »." },
+    { q: "Qui a fondé la Gestion Mentale ?", a: ["Carl Rogers", "Isabelle Grouffal", "Antoine de La Garanderie"], ok: 2,
+      fb: "Antoine de La Garanderie, philosophe et pédagogue (1920 – 2010). Isabelle Grouffal a fondé IFParis en 2006." },
+    { q: "Combien de concepts fondamentaux aborderons-nous dans ce module ?", a: ["Deux", "Quatre", "Six"], ok: 1,
+      fb: "Quatre concepts : l’évocation, les gestes mentaux, les structures de sens et le projet. Six, c’est le nombre d’étapes du plan." }
+  ];
+  var answered = 0;
+  $("#quiz").innerHTML = Q.map(function (q, i) {
+    return '<div class="q card"><fieldset><legend>' + (i + 1) + ". " + q.q + "</legend>" + q.a.map(function (a, j) {
+      return '<label><input type="radio" name="q' + i + '" value="' + j + '">' + a + "</label>";
+    }).join("") + '<p class="fb" role="status"></p></fieldset></div>';
+  }).join("") + '<div class="done-box card" id="done"><div><strong>Vous êtes prêt·e à commencer.</strong><span>Première étape : qu’est-ce que la Gestion Mentale ?</span></div></div>';
+  [].forEach.call(document.querySelectorAll(".q"), function (box, i) {
+    box.addEventListener("change", function (e) {
+      var v = +e.target.value, labels = box.querySelectorAll("label");
+      [].forEach.call(labels, function (l) { l.classList.remove("ok", "ko"); });
+      labels[Q[i].ok].classList.add("ok");
+      if (v !== Q[i].ok) labels[v].classList.add("ko");
+      box.querySelector(".fb").textContent = (v === Q[i].ok ? "Exact. " : "Pas tout à fait. ") + Q[i].fb;
+      if (!box.classList.contains("answered")) { box.classList.add("answered"); answered++; }
+      if (answered === Q.length) $("#done").classList.add("on");
+    });
+  });
+
+  // Navigation
+  $("#toc").innerHTML = screens.map(function (s, i) {
+    return '<li><button data-i="' + i + '"><span class="n"><span>' + (i + 1) + '</span></span><span class="t">' + s.dataset.title + '</span><span class="d">' + s.dataset.dur + "</span></button></li>";
+  }).join("");
+  var tocBtns = [].slice.call(document.querySelectorAll("#toc button"));
+  function go(i) {
+    if (i < 0 || i >= screens.length) return;
+    seen[cur] = true; cur = i;
+    [].forEach.call(document.querySelectorAll("video"), function (v) { v.pause(); });
+    screens.forEach(function (s, k) { s.classList.toggle("on", k === i); });
+    tocBtns.forEach(function (b, k) {
+      b.classList.toggle("done", !!seen[k] && k !== i);
+      if (k === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+    $("#prev").disabled = i === 0;
+    $("#next").disabled = i === screens.length - 1;
+    $("#pos").textContent = "Écran " + (i + 1) + " sur " + screens.length;
+    $("#count").textContent = (i + 1) + " / " + screens.length;
+    $("#bar").style.width = ((i + 1) / screens.length * 100) + "%";
+    window.scrollTo(0, 0);
+  }
+  tocBtns.forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.i); }); });
+  $("#prev").addEventListener("click", function () { go(cur - 1); });
+  $("#next").addEventListener("click", function () { go(cur + 1); });
+  document.addEventListener("keydown", function (e) {
+    if (/INPUT|VIDEO|BUTTON/.test(e.target.tagName)) return;
+    if (e.key === "ArrowRight") go(cur + 1);
+    if (e.key === "ArrowLeft") go(cur - 1);
+  });
+  go(0);
+})();
+</script>
+</body>
+</html>

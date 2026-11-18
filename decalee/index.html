@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Module 2 · Introduction à la Gestion Mentale — version décalée</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+:root{--cream:#fff3dc;--tomato:#ff5c39;--lime:#d8f26a;--pad:clamp(18px,4vw,64px)}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--grotesk);font-size:18px;line-height:1.45;overflow-x:hidden}
+section{position:relative;padding:clamp(72px,11vw,160px) var(--pad)}
+.kicker{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.2vw,30px);font-variation-settings:"SOFT" 100,"WONK" 1}
+.big{font-weight:800;font-stretch:78%;font-size:clamp(48px,9.5vw,150px);line-height:.88;letter-spacing:-.035em;text-wrap:balance}
+.reveal{opacity:0;transform:translateY(40px) rotate(var(--r,0deg));transition:opacity .8s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:rotate(var(--r,0deg))}
+
+/* Barre du haut */
+.bar{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:14px var(--pad);mix-blend-mode:normal;pointer-events:none}
+.bar>*{pointer-events:auto}
+.bar a:first-child{background:var(--cream);padding:8px 14px;border-radius:18px;border:2px solid var(--ink)}
+.bar img{width:84px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:99px;background:var(--ink);color:var(--cream);font-weight:600;font-size:14px;text-decoration:none;transition:transform .3s var(--ease)}
+.pill:hover{transform:rotate(-3deg) scale(1.05)}
+.prog{position:fixed;z-index:21;left:0;top:0;height:5px;background:var(--tomato);width:100%;transform-origin:0 50%;transform:scaleX(0)}
+
+/* 1. Ouverture */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:110px;padding-bottom:120px;overflow:hidden}
+.hero .kicker{margin-left:.3em;transform:rotate(-4deg);transform-origin:0 100%;display:inline-block;color:var(--teal-deep)}
+.hero h1{font-weight:800;font-size:clamp(70px,19.5vw,330px);line-height:.8;letter-spacing:-.045em;margin-top:.08em;user-select:none}
+.hero h1 span{display:inline-block;font-stretch:var(--w,88%);font-weight:var(--g,700);transition:font-stretch .25s,font-weight .25s,color .25s,transform .25s}
+.hero h1 .l2{display:block;color:var(--teal);margin-left:.5em}
+.hero h1 span.hot{color:var(--tomato)}
+.badge{position:absolute;right:clamp(16px,7vw,120px);top:clamp(96px,16vh,170px);width:clamp(110px,15vw,210px);aspect-ratio:1;border-radius:50%;background:var(--orange);display:grid;place-items:center;transform:rotate(12deg);cursor:grab;touch-action:none;z-index:5}
+.badge svg{position:absolute;inset:0;animation:spin 14s linear infinite}
+.badge text{font-family:var(--grotesk);font-weight:700;font-size:13.5px;letter-spacing:.16em;fill:var(--ink)}
+.badge b{font-size:clamp(46px,7vw,96px);font-weight:800;line-height:1;font-stretch:75%}
+@keyframes spin{to{transform:rotate(360deg)}}
+.marquee{position:absolute;left:0;right:0;bottom:0;background:var(--ink);color:var(--cream);padding:14px 0;white-space:nowrap;overflow:hidden;transform:rotate(-1.2deg) scale(1.04);transform-origin:50% 100%}
+.marquee div{display:inline-block;animation:slide 26s linear infinite;font-weight:600;font-size:clamp(16px,1.6vw,22px);letter-spacing:.02em}
+.marquee i{font-family:var(--serif);font-style:italic;color:var(--orange);padding:0 .7em}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* 2. Bonjour */
+.hello{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,5vw,90px);align-items:center}
+.hello .big em{font-family:var(--serif);font-style:italic;font-weight:500;font-stretch:100%;letter-spacing:-.03em;color:var(--tomato);font-variation-settings:"SOFT" 100,"WONK" 1}
+.face{position:relative;width:min(100%,440px);justify-self:center}
+.face .ph{aspect-ratio:1;border-radius:46% 54% 58% 42%/48% 44% 56% 52%;overflow:hidden;background:var(--teal);animation:blob 12s ease-in-out infinite alternate}
+.face img{width:100%;height:100%;object-fit:cover;object-position:50% 28%;transform:scale(1.3)}
+@keyframes blob{to{border-radius:58% 42% 44% 56%/42% 56% 44% 58%}}
+.tag{position:absolute;padding:9px 16px;border-radius:99px;font-weight:700;font-size:15px;white-space:nowrap;cursor:grab;touch-action:none;box-shadow:3px 4px 0 var(--ink);border:2px solid var(--ink)}
+.tag.a{background:var(--lime);left:-6%;top:10%;transform:rotate(-9deg)}
+.tag.b{background:var(--orange);right:-8%;bottom:16%;transform:rotate(7deg)}
+.years{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,28px);margin-top:clamp(20px,4vw,60px)}
+.year{padding:clamp(20px,2.4vw,34px);border-radius:26px;border:2px solid var(--ink);background:#fff;box-shadow:6px 7px 0 var(--ink);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.year:hover{transform:translate(-3px,-4px) rotate(0deg)!important;box-shadow:10px 12px 0 var(--ink)}
+.year b{display:block;font-size:clamp(46px,6vw,88px);font-weight:800;font-stretch:75%;line-height:.9;letter-spacing:-.03em}
+.year:nth-child(1) b{color:var(--teal)}.year:nth-child(2) b{color:var(--tomato)}.year:nth-child(3) b{color:var(--orange)}
+.year p{margin-top:12px;font-size:17px;font-weight:500}
+details.mot{grid-column:1/-1;margin-top:8px;border-top:2px solid var(--ink)}
+details.mot summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:700;display:flex;justify-content:space-between;align-items:center;font-size:19px}
+details.mot summary::-webkit-details-marker{display:none}
+details.mot summary::after{content:"+";font-size:34px;line-height:.6;font-weight:400;transition:transform .3s}
+details.mot[open] summary::after{transform:rotate(45deg)}
+details.mot div{columns:2 320px;column-gap:48px;padding-bottom:28px;font-family:var(--sans);font-size:16.5px;line-height:1.6}
+details.mot p{margin-bottom:1em;break-inside:avoid}
+
+/* 3. Objectifs */
+.goals{background:var(--teal);color:#fff;border-radius:clamp(28px,5vw,70px);margin:0 clamp(8px,1.4vw,22px)}
+.goals .grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,5vw,80px);align-items:center;margin-top:clamp(28px,5vw,64px)}
+.bubble{position:relative;width:min(100%,460px);aspect-ratio:1;justify-self:center}
+.bubble video{width:100%;height:100%;object-fit:cover;border-radius:50%;border:6px solid var(--cream);background:#000}
+.bubble::before{content:"";position:absolute;inset:-18px;border-radius:50%;border:2px dashed var(--apricot);animation:spin 40s linear infinite}
+.play{position:absolute;right:2%;bottom:4%;width:92px;height:92px;border-radius:50%;background:var(--tomato);color:#fff;display:grid;place-items:center;border:3px solid var(--ink);box-shadow:4px 5px 0 var(--ink);transition:transform .25s var(--ease);font-weight:800;font-size:14px;letter-spacing:.06em}
+.play:hover{transform:scale(1.08) rotate(-6deg)}
+.play svg{width:30px;height:30px;fill:currentColor}
+.play .pa{display:none}.playing .play .pl{display:none}.playing .play .pa{display:block}
+.say{min-height:2.5em;margin-top:26px;text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(18px,1.7vw,23px);line-height:1.25;opacity:0;transition:opacity .3s}
+.say.on{opacity:1}
+.cards{display:grid;gap:clamp(16px,2vw,26px)}
+.goal{position:relative;padding:clamp(24px,3vw,44px);padding-left:clamp(96px,11vw,170px);border-radius:30px;background:var(--cream);color:var(--ink);border:2px solid var(--ink);box-shadow:7px 8px 0 var(--ink);font-weight:700;font-stretch:88%;font-size:clamp(24px,3vw,44px);line-height:1.02;letter-spacing:-.02em;transition:transform .4s var(--ease),background .3s}
+.goal:nth-child(2){background:var(--apricot);margin-left:clamp(0px,4vw,60px)}
+.goal i{position:absolute;left:clamp(16px,2vw,30px);top:50%;transform:translateY(-52%);font-style:normal;font-size:clamp(84px,11vw,170px);font-weight:800;font-stretch:75%;line-height:1;color:transparent;-webkit-text-stroke:2.5px var(--tomato)}
+.goal.lit{background:var(--lime);transform:rotate(0deg) scale(1.03)!important}
+.goal.lit i{color:var(--tomato)}
+
+/* 4. Plan */
+.plan{background:var(--ink);color:var(--cream);margin-top:clamp(40px,7vw,110px)}
+.plan .big{color:var(--orange)}
+.plan .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(28px,5vw,80px);margin-top:clamp(30px,5vw,70px);align-items:start}
+.deck{position:sticky;top:90px}
+.screenv{position:relative;border-radius:26px;overflow:hidden;border:3px solid var(--cream);transform:rotate(-2deg);background:#000}
+.screenv video{width:100%;aspect-ratio:16/10;object-fit:cover}
+.screenv .play{right:14px;bottom:14px;width:76px;height:76px}
+.deck .say{text-align:left;color:var(--apricot)}
+.tracks li{border-bottom:1.5px solid rgba(255,243,220,.22)}
+.tracks button{display:grid;grid-template-columns:clamp(46px,6vw,90px) 1fr 40px;align-items:baseline;gap:12px;width:100%;text-align:left;padding:clamp(16px,2vw,26px) 0;transition:color .3s,padding .4s var(--ease)}
+.tracks .n{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2vw,28px);opacity:.55}
+.tracks .t{font-weight:700;font-stretch:84%;font-size:clamp(24px,3.3vw,50px);line-height:1;letter-spacing:-.025em}
+.tracks .s{display:block;font-family:var(--sans);font-weight:400;font-stretch:100%;font-size:16px;letter-spacing:0;line-height:1.45;max-height:0;overflow:hidden;opacity:0;transition:max-height .5s var(--ease),opacity .4s,margin .4s;color:var(--apricot);max-width:46ch}
+.tracks .eq{display:flex;gap:3px;align-items:flex-end;height:22px;justify-self:end;opacity:0}
+.tracks .eq i{width:5px;background:var(--lime);border-radius:2px;height:30%;animation:eq .7s ease-in-out infinite alternate}
+.tracks .eq i:nth-child(2){animation-delay:-.3s}.tracks .eq i:nth-child(3){animation-delay:-.55s}
+@keyframes eq{to{height:100%}}
+.tracks button:hover,.tracks li.live button{color:var(--lime);padding-left:14px}
+.tracks button:hover .s,.tracks li.live .s,.tracks button:focus-visible .s{max-height:9em;opacity:1;margin-top:10px}
+.tracks li.live .eq{opacity:1}
+.tip{font-size:14px;opacity:.6;margin-top:18px;font-family:var(--sans)}
+
+/* 5. Expérience */
+.lab{background:var(--orange);text-align:center;overflow:hidden}
+.lab .big{max-width:13ch;margin:0 auto}
+.lab .how{font-size:clamp(18px,1.8vw,24px);font-weight:500;max-width:34ch;margin:22px auto 0}
+.lemon{width:clamp(120px,16vw,210px);margin:clamp(24px,4vw,50px) auto;animation:bob 3.4s ease-in-out infinite alternate;filter:drop-shadow(6px 9px 0 var(--ink))}
+@keyframes bob{to{transform:translateY(-14px) rotate(8deg)}}
+.opts{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:820px;margin:0 auto}
+.opts button{padding:15px 24px;border-radius:99px;background:var(--cream);border:2px solid var(--ink);box-shadow:4px 5px 0 var(--ink);font-weight:700;font-size:clamp(16px,1.5vw,20px);transition:transform .2s var(--ease),box-shadow .2s,background .2s}
+.opts button:hover{transform:translate(-2px,-3px);box-shadow:7px 9px 0 var(--ink)}
+.opts button[aria-pressed="true"]{background:var(--ink);color:var(--lime);transform:translate(3px,4px);box-shadow:0 0 0 var(--ink)}
+.verdict{max-width:760px;margin:clamp(26px,4vw,48px) auto 0;padding:clamp(22px,3vw,40px);border-radius:30px;background:var(--ink);color:var(--cream);text-align:left;display:none;transform:rotate(-1deg)}
+.verdict.on{display:block;animation:pop .6s var(--ease)}
+@keyframes pop{from{transform:scale(.7) rotate(-8deg);opacity:0}}
+.verdict strong{display:block;font-size:clamp(26px,3.4vw,46px);font-weight:800;font-stretch:80%;line-height:1;color:var(--lime);margin-bottom:14px}
+.verdict q{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2vw,27px);line-height:1.25;display:block;margin-top:14px;color:var(--orange)}
+.verdict small{display:block;margin-top:14px;font-family:var(--sans);font-size:14px;opacity:.65}
+
+/* 6. Sortie */
+.out{min-height:80svh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:28px}
+.out .big{font-size:clamp(60px,15vw,250px)}
+.out .big em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--teal);font-variation-settings:"SOFT" 100,"WONK" 1}
+.out nav{display:flex;flex-wrap:wrap;gap:12px}
+.out .pill{font-size:17px;padding:14px 24px}
+.out .pill.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+
+/* Curseur */
+.dot{position:fixed;z-index:50;left:0;top:0;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--tomato);pointer-events:none;mix-blend-mode:multiply;transition:width .25s,height .25s,margin .25s,opacity .3s;opacity:0}
+.dot.big{width:64px;height:64px;margin:-32px}
+@media (hover:none){.dot{display:none}}
+
+@media (max-width:820px){
+  .hello,.goals .grid,.plan .grid{grid-template-columns:1fr}
+  .years{grid-template-columns:1fr}
+  .deck{position:static}
+  .goal:nth-child(2){margin-left:0}
+  .tracks .s{max-height:9em;opacity:.85;margin-top:8px}
+  .badge{top:auto;bottom:90px;right:16px}
+  .tag.a{left:0}.tag.b{right:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important}
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="dot" id="dot"></div>
+<header class="bar">
+  <a href="../index.html" aria-label="Retour au choix de version"><img src="../assets/logo.svg" alt="IF Paris"></a>
+  <a class="pill" href="../index.html">← 3 versions</a>
+</header>
+
+<main>
+<!-- 1 -->
+<section class="hero" id="hero">
+  <p class="kicker">Introduction à la</p>
+  <h1 id="title" aria-label="Gestion Mentale"><span class="l1" aria-hidden="true">Gestion</span><span class="l2" aria-hidden="true">Mentale</span></h1>
+  <div class="badge" data-drag aria-hidden="true">
+    <svg viewBox="0 0 200 200"><defs><path id="circ" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#circ">MODULE · EN AUTONOMIE · MODULE · EN AUTONOMIE · </textPath></text></svg>
+    <b>2</b>
+  </div>
+  <div class="marquee" aria-hidden="true"><div id="mq"></div></div>
+</section>
+
+<!-- 2 -->
+<section class="hello" id="bonjour">
+  <div>
+    <p class="kicker reveal">Votre formatrice</p>
+    <h2 class="big reveal" style="--d:.08s">Bonjour, moi c’est <em>Isabelle.</em></h2>
+  </div>
+  <div class="face reveal" style="--d:.15s">
+    <div class="ph"><img src="../assets/media/objectifs-poster.jpg" alt="Isabelle Grouffal"></div>
+    <span class="tag a" data-drag>+ de 20 ans de Gestion Mentale</span>
+    <span class="tag b" data-drag>Fondatrice d’IFParis</span>
+  </div>
+  <div class="years" id="years"></div>
+  <details class="mot"><summary>Lire son mot d’accueil en entier</summary><div id="mot"></div></details>
+</section>
+
+<!-- 3 -->
+<section class="goals" id="objectifs">
+  <p class="kicker reveal">Dans le viseur</p>
+  <h2 class="big reveal" style="--d:.08s">Deux objectifs. Pas un de plus.</h2>
+  <div class="grid">
+    <div class="reveal">
+      <div class="bubble" id="b1">
+        <video id="v1" playsinline preload="metadata" poster="../assets/media/objectifs-poster.jpg" src="../assets/media/objectifs.mp4"></video>
+        <button class="play" data-v="v1" aria-label="Lire ou mettre en pause la vidéo des objectifs"><svg class="pl" viewBox="0 0 24 24"><path d="M7 4v16l14-8z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+      </div>
+      <p class="say" id="c1"></p>
+    </div>
+    <ol class="cards" id="goals"></ol>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="plan" id="plan">
+  <p class="kicker reveal">Au programme</p>
+  <h2 class="big reveal" style="--d:.08s">Six étapes, à dérouler comme une playlist.</h2>
+  <div class="grid">
+    <div class="deck reveal">
+      <div class="screenv" id="b2">
+        <video id="v2" playsinline preload="metadata" poster="../assets/media/plan-poster.jpg" src="../assets/media/plan.mp4"></video>
+        <button class="play" data-v="v2" aria-label="Lire ou mettre en pause la vidéo du plan"><svg class="pl" viewBox="0 0 24 24"><path d="M7 4v16l14-8z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+      </div>
+      <p class="say" id="c2"></p>
+      <p class="tip">Lancez la vidéo : Isabelle annonce chaque étape. Ou cliquez sur une étape pour y sauter.</p>
+    </div>
+    <ol class="tracks" id="tracks"></ol>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="lab" id="labo">
+  <p class="kicker reveal">Mise en projet express</p>
+  <h2 class="big reveal" style="--d:.08s">Pensez à un citron.</h2>
+  <p class="how reveal" style="--d:.14s">Fermez les yeux cinq secondes. Puis dites-nous ce qui s’est passé dans votre tête.</p>
+  <svg class="lemon" viewBox="0 0 200 160" aria-hidden="true"><path d="M22 84c4-40 44-66 88-62 26 2 44 12 58 28 8 2 18 8 22 18-2 10-10 18-18 22-12 28-44 48-82 46-42-2-72-22-68-52z" fill="#ffe14a" stroke="#0f2f38" stroke-width="5" stroke-linejoin="round"/><path d="M52 62c12-14 30-20 46-20" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".8"/><circle cx="92" cy="84" r="5" fill="#0f2f38"/><circle cx="128" cy="86" r="5" fill="#0f2f38"/><path d="M98 104c8 8 18 8 26 1" fill="none" stroke="#0f2f38" stroke-width="5" stroke-linecap="round"/></svg>
+  <div class="opts" id="opts" role="group" aria-label="Ce qui s’est passé dans ma tête">
+    <button aria-pressed="false">Je l’ai vu</button>
+    <button aria-pressed="false">J’ai entendu le mot</button>
+    <button aria-pressed="false">Je me le suis décrit</button>
+    <button aria-pressed="false">J’ai senti son goût acide</button>
+    <button aria-pressed="false">Rien du tout… ?</button>
+  </div>
+  <div class="verdict" id="verdict" role="status">
+    <strong>Vous venez de faire une évocation.</strong>
+    <p id="vtxt"></p>
+    <q>Elle est le fondement même de la vie mentale.</q>
+    <small>C’est le premier des quatre concepts fondamentaux que vous allez explorer dans ce module.</small>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="out">
+  <p class="kicker reveal">Vous avez le plan, vous avez le cap</p>
+  <h2 class="big reveal" style="--d:.08s">Bonne <em>écoute&nbsp;!</em></h2>
+  <nav class="reveal" style="--d:.16s"><a class="pill" href="#hero">↑ Revoir le début</a><a class="pill alt" href="../index.html">Comparer les trois versions</a></nav>
+</section>
+</main>
+
+<script src="../assets/content.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return [].slice.call(document.querySelectorAll(s)); };
+  var calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  // Contenus
+  $("#mq").innerHTML = new Array(9).join("Introduction à la Gestion Mentale<i>✺</i>Module 2<i>✺</i>" + IFP.plan.map(function (p) { return p.court; }).join("<i>→</i>") + "<i>✺</i>");
+  $("#years").innerHTML = IFP.formatrice.reperes.map(function (r, i) {
+    return '<div class="year reveal" style="--r:' + [-2, 1.5, -1][i] + "deg;--d:" + i * .1 + 's"><b>' + r.an + "</b><p>" + r.texte + "</p></div>";
+  }).join("");
+  $("#mot").innerHTML = IFP.bienvenue.map(function (p) { return "<p>" + p + "</p>"; }).join("");
+  $("#goals").innerHTML = IFP.objectifs.map(function (o, i) {
+    return '<li class="goal reveal" style="--r:' + [-1.5, 1.2][i] + "deg;--d:" + (.1 + i * .12) + 's"><i>' + (i + 1) + "</i>" + o + "</li>";
+  }).join("");
+  $("#tracks").innerHTML = IFP.plan.map(function (p, i) {
+    return '<li><button data-i="' + i + '"><span class="n">0' + (i + 1) + '</span><span class="t">' + p.titre + '<span class="s">' + p.apercu + " " + p.detail + '</span></span><span class="eq"><i></i><i></i><i></i></span></button></li>';
+  }).join("");
+
+  // Titre élastique : chaque lettre s'élargit et s'épaissit à l'approche du curseur
+  $$("#title > span").forEach(function (line) {
+    line.innerHTML = line.textContent.split("").map(function (c) { return "<span>" + c + "</span>"; }).join("");
+  });
+  var letters = $$("#title span span");
+  function flex(x, y) {
+    letters.forEach(function (l) {
+      var r = l.getBoundingClientRect(), d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
+      var k = Math.max(0, 1 - d / 420);
+      l.style.setProperty("--w", (76 + 24 * k) + "%");
+      l.style.setProperty("--g", Math.round(380 + 420 * k));
+      l.classList.toggle("hot", k > .82);
+    });
+  }
+  if (!calm && matchMedia("(hover:hover)").matches) {
+    $("#hero").addEventListener("pointermove", function (e) { flex(e.clientX, e.clientY); });
+    flex(innerWidth * .3, innerHeight * .5);
+  } else if (!calm) {
+    var t0 = 0; (function wave(t) { t0 = t / 1000; flex(innerWidth * (.5 + .5 * Math.sin(t0)), innerHeight * .45); if (scrollY < innerHeight) requestAnimationFrame(wave); else setTimeout(function () { requestAnimationFrame(wave); }, 500); })(0);
+  }
+
+  // Apparitions au défilement + barre de progression
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { threshold: .15 });
+  $$(".reveal").forEach(function (el) { io.observe(el); });
+  addEventListener("scroll", function () {
+    $("#prog").style.transform = "scaleX(" + (scrollY / (document.documentElement.scrollHeight - innerHeight)) + ")";
+  }, { passive: true });
+
+  // Vidéos
+  $$(".play").forEach(function (b) {
+    var v = $("#" + b.dataset.v), box = b.parentNode;
+    b.addEventListener("click", function () { $$("video").forEach(function (o) { if (o !== v) o.pause(); }); v.paused ? v.play() : v.pause(); });
+    v.addEventListener("click", function () { b.click(); });
+    ["play", "pause", "ended"].forEach(function (e) { v.addEventListener(e, function () { box.classList.toggle("playing", !v.paused && !v.ended); }); });
+  });
+  var goalEls = $$(".goal");
+  IFP.captions($("#v1"), $("#c1"), IFP.cues.objectifs, function (t, on) {
+    goalEls[0].classList.toggle("lit", on && t >= 5.5 && t < 12.2);
+    goalEls[1].classList.toggle("lit", on && t >= 12.2 && t < 15.2);
+  });
+  var tracks = $$("#tracks li");
+  IFP.captions($("#v2"), $("#c2"), IFP.cues.plan, function (t, on) {
+    var k = on ? IFP.stepAt(t) : -1;
+    tracks.forEach(function (li, i) { li.classList.toggle("live", i === k); });
+  });
+  $$("#tracks button").forEach(function (b) {
+    b.addEventListener("click", function () { var v = $("#v2"); $("#v1").pause(); v.currentTime = IFP.plan[+b.dataset.i].t[0] + .05; v.play(); });
+  });
+
+  // Mini-expérience
+  var VT = [
+    "Vous l’avez vu : une image s’est formée dans votre tête, sans citron sous les yeux.",
+    "Vous l’avez entendu : le mot a résonné dans votre tête, sans que personne ne le prononce.",
+    "Vous vous l’êtes décrit : des mots sont venus, à vous, pour vous.",
+    "Vous l’avez goûté : une sensation est revenue, sans citron dans la bouche.",
+    "Rien ? Peut-être que c’est allé trop vite pour le remarquer. Observer ce qui se passe « dans la boîte noire », cela s’apprend : c’est l’objet de ce module."
+  ];
+  $$("#opts button").forEach(function (b, i) {
+    b.addEventListener("click", function () {
+      $$("#opts button").forEach(function (o) { o.setAttribute("aria-pressed", o === b); });
+      $("#vtxt").textContent = VT[i];
+      $("#verdict strong").textContent = i === 4 ? "Pas si sûr…" : "Vous venez de faire une évocation.";
+      var v = $("#verdict"); v.classList.remove("on"); void v.offsetWidth; v.classList.add("on");
+    });
+  });
+
+  // Autocollants à déplacer
+  $$("[data-drag]").forEach(function (el) {
+    var sx, sy, ox = 0, oy = 0, base = getComputedStyle(el).transform;
+    if (base === "none") base = "";
+    el.addEventListener("pointerdown", function (e) { sx = e.clientX - ox; sy = e.clientY - oy; el.setPointerCapture(e.pointerId); el.style.cursor = "grabbing"; });
+    el.addEventListener("pointermove", function (e) { if (sx == null) return; ox = e.clientX - sx; oy = e.clientY - sy; el.style.transform = "translate(" + ox + "px," + oy + "px) " + base; });
+    el.addEventListener("pointerup", function () { sx = null; el.style.cursor = ""; });
+  });
+
+  // Curseur
+  var dot = $("#dot");
+  addEventListener("pointermove", function (e) { dot.style.opacity = 1; dot.style.transform = "translate(" + e.clientX + "px," + e.clientY + "px)"; dot.classList.toggle("big", !!e.target.closest("a,button,summary,[data-drag]")); });
+})();
+</script>
+</body>
+</html>

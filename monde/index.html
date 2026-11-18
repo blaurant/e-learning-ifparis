@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voyage dans la boîte noire — Module 2 · Introduction à la Gestion Mentale</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+:root{--night:#071d24;--deep:#0c2c36;--hill1:#103c49;--hill2:#17505f;--hill3:#1f6577;--glow:#ffd9a0;--pink:#ff8fa3;--lilac:#b9a7ff;--lime:#d8f26a;--g:15vh}
+body{background:var(--night);color:var(--apricot);font-size:17px;line-height:1.55}
+.journey{position:relative}
+.view{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:linear-gradient(#0a2530 0%,#0f3a47 55%,#1a5868 100%)}
+
+/* ----- Décor en parallaxe ----- */
+.layer{position:absolute;left:0;right:0;background-repeat:repeat-x;pointer-events:none;will-change:background-position}
+.l-far{bottom:var(--g);height:46vh;background-size:auto 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='400' viewBox='0 0 1400 400'%3E%3Cpath d='M0,210 C120,60 300,40 430,150 C520,225 600,230 700,150 C830,50 1000,60 1100,170 C1200,270 1300,290 1400,210 V400 H0Z' fill='%23103c49'/%3E%3Cpath d='M150,170 q60,-70 140,-40 M760,150 q70,-60 150,-30 M1040,210 q40,30 100,20 M420,220 q40,30 110,10' fill='none' stroke='%2317505f' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E")}
+.l-mid{bottom:calc(var(--g) - 2vh);height:34vh;background-size:auto 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1100' height='340' viewBox='0 0 1100 340'%3E%3Cpath d='M0,200 C100,110 230,100 330,180 C420,250 520,240 610,170 C720,90 850,100 930,180 C1000,250 1050,250 1100,200 V340 H0Z' fill='%2317505f'/%3E%3Cg fill='none' stroke='%231f6577' stroke-width='5' stroke-linecap='round'%3E%3Cpath d='M210,150 V70 M210,100 l-34,-38 M210,84 l30,-40 M240,44 l-4,-26 M176,62 l-22,-8'/%3E%3Cpath d='M800,140 V40 M800,90 l40,-34 M800,66 l-32,-36 M840,56 l22,-30'/%3E%3C/g%3E%3Cg fill='%23ffd9a0'%3E%3Ccircle cx='210' cy='66' r='6'/%3E%3Ccircle cx='154' cy='54' r='5'/%3E%3Ccircle cx='236' cy='18' r='5'/%3E%3Ccircle cx='800' cy='36' r='6'/%3E%3Ccircle cx='862' cy='26' r='5'/%3E%3Ccircle cx='768' cy='30' r='5'/%3E%3C/g%3E%3C/svg%3E")}
+.l-ground{bottom:0;height:calc(var(--g) + 5vh);background-size:auto 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='200' viewBox='0 0 900 200' preserveAspectRatio='none'%3E%3Cpath d='M0,46 C150,14 300,14 450,46 S750,78 900,46 V200 H0Z' fill='%231f6577'/%3E%3Cpath d='M0,70 C150,40 300,40 450,70 S750,100 900,70 V200 H0Z' fill='%23164c5b'/%3E%3C/svg%3E")}
+canvas#sparks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* ----- Le monde qui défile ----- */
+.world{position:absolute;inset:0;display:flex;width:max-content;will-change:transform}
+.scene{position:relative;width:100vw;height:100%;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:3vw;padding:84px 5vw 0 17vw}
+.card{position:relative;align-self:center;margin-bottom:calc(var(--g) + 4vh);max-width:520px;opacity:0;transform:translateY(30px);transition:opacity .7s var(--ease),transform .8s var(--ease)}
+.here .card{opacity:1;transform:none}
+.card::before{content:"";position:absolute;z-index:-1;inset:-70px -90px;background:radial-gradient(closest-side,rgba(7,29,36,.72),rgba(7,29,36,0));pointer-events:none}
+.place{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--glow)}
+.place b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--orange);color:var(--night);font-size:14px;letter-spacing:0}
+.card h2{font-family:var(--serif);font-weight:400;font-variation-settings:"SOFT" 100,"WONK" 0;font-size:clamp(30px,3.7vw,56px);line-height:1.02;letter-spacing:-.02em;color:#fff;margin:14px 0 16px;text-wrap:balance}
+.card h2 em{font-style:italic;color:var(--glow);font-variation-settings:"SOFT" 100,"WONK" 1}
+.card blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.7vw,24px);line-height:1.3;color:var(--glow);padding-left:18px;border-left:3px solid var(--orange);margin-bottom:14px}
+.card p{max-width:46ch;color:#d9e6e4}
+.card p+p{margin-top:.8em}
+.link{display:inline-flex;gap:8px;margin-top:18px;font-weight:600;color:var(--glow);border-bottom:1.5px solid currentColor;padding-bottom:2px}
+.link:hover{color:#fff}
+.art{align-self:end;justify-self:center;margin-bottom:calc(var(--g) + 1.5vh);width:min(100%,80vh,780px);opacity:0;transform:translateY(40px) scale(.96);transition:opacity .8s var(--ease) .1s,transform 1s var(--ease) .1s;transform-origin:50% 100%}
+.here .art{opacity:1;transform:none}
+.art svg{width:100%;height:auto;overflow:visible}
+.art text{font-family:var(--serif)}
+
+/* Objectifs et carte */
+.goals{display:grid;gap:10px;margin-top:20px}
+.goals li{display:flex;gap:14px;align-items:center;padding:13px 18px;border-radius:16px;background:rgba(255,217,160,.1);border:1px solid rgba(255,217,160,.3);font-family:var(--serif);font-size:clamp(17px,1.5vw,21px);line-height:1.2;color:#fff;transition:.4s var(--ease)}
+.goals li::before{content:"";flex:none;width:14px;height:14px;border-radius:50%;background:var(--glow);box-shadow:0 0 0 5px rgba(255,217,160,.2),0 0 22px 6px rgba(255,165,54,.6)}
+.goals li.lit{background:var(--glow);color:var(--night);transform:translateX(8px)}
+.route{margin-top:18px;position:relative}
+.route::before{content:"";position:absolute;left:14px;top:14px;bottom:14px;border-left:2px dashed rgba(255,217,160,.4)}
+.route button{position:relative;display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:center;width:100%;text-align:left;padding:6px 0;color:#d9e6e4;font-weight:500;font-size:clamp(14.5px,1.25vw,17px);line-height:1.25;transition:color .3s,transform .4s var(--ease)}
+.route b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--deep);border:2px solid var(--glow);color:var(--glow);font-size:13px;transition:.3s}
+.route button:hover,.route li.live button{color:#fff;transform:translateX(6px)}
+.route li.live b,.route button:hover b{background:var(--orange);border-color:var(--orange);color:var(--night);box-shadow:0 0 24px 4px rgba(255,165,54,.6)}
+
+/* Hublot vidéo */
+.port{position:relative;width:min(84%,54vh,520px);aspect-ratio:1;margin:0 auto}
+.port video{width:100%;height:100%;object-fit:cover;border-radius:50%;border:10px solid #c98a3c;outline:3px solid #7a4d1a;box-shadow:0 0 0 14px rgba(255,217,160,.12),0 0 90px 10px rgba(255,165,54,.35);background:#000}
+.port .rivet{position:absolute;inset:-4px;border-radius:50%;border:2px dotted rgba(7,29,36,.55);pointer-events:none}
+.port button{position:absolute;right:4%;bottom:6%;width:78px;height:78px;border-radius:50%;background:var(--orange);color:var(--night);display:grid;place-items:center;box-shadow:0 6px 0 #a9661a,0 0 30px rgba(255,165,54,.6);transition:transform .2s}
+.port button:hover{transform:translateY(-3px) scale(1.05)}
+.port button:active{transform:translateY(4px)}
+.port svg{width:28px;height:28px;fill:currentColor}
+.port .pa{display:none}.port.playing .pl{display:none}.port.playing .pa{display:block}
+.say{min-height:3.2em;text-align:center;margin-top:16px;font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.5vw,21px);line-height:1.3;color:#fff;opacity:0;transition:opacity .3s}
+.say.on{opacity:1}
+.art.vid{margin-bottom:calc(var(--g) + 3vh)}
+
+/* Concepts */
+.concepts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.concepts li{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,217,160,.25);font-size:14px;line-height:1.35;color:#d9e6e4}
+.concepts b{display:block;font-family:var(--serif);font-weight:500;font-size:19px;color:var(--glow);margin-bottom:4px}
+
+/* ----- Personnages ----- */
+.bob{animation:bob 3.2s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-7px)}}
+.lids{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.pupil{transform:translate(var(--px,0px),var(--py,0px));transition:transform .2s}
+.turn{transform-box:fill-box;transform-origin:50% 50%;animation:turn 6s linear infinite}
+@keyframes turn{to{transform:rotate(360deg)}}
+.twinkle{transform-box:fill-box;transform-origin:50% 50%;animation:tw 1.6s ease-in-out infinite alternate}
+@keyframes tw{from{transform:scale(.7);opacity:.6}}
+.rise{animation:rise 5s ease-in infinite}
+@keyframes rise{0%{transform:translateY(60px);opacity:0}20%{opacity:1}100%{transform:translateY(-240px);opacity:0}}
+.beam{transform-origin:300px 132px;animation:sweep 7s ease-in-out infinite alternate}
+@keyframes sweep{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.float{animation:float 5s ease-in-out infinite alternate}
+@keyframes float{to{transform:translateY(-26px) rotate(1.5deg)}}
+
+/* Le voyageur : vous */
+.you{position:absolute;left:6vw;bottom:calc(var(--g) - 1.5vh);width:clamp(64px,8.5vh,104px);z-index:4;opacity:0;transition:opacity .5s;pointer-events:none}
+.you svg{overflow:visible;width:100%}
+.you .tagme{position:absolute;left:50%;bottom:104%;transform:translateX(-50%);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--night);background:var(--glow);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.you .foot{transform-box:fill-box;transform-origin:50% 0}
+.you.walk .foot.a{animation:step .36s ease-in-out infinite alternate}
+.you.walk .foot.b{animation:step .36s ease-in-out infinite alternate-reverse}
+.you.walk .bob{animation-duration:.36s}
+@keyframes step{from{transform:translate(-5px,0)}to{transform:translate(6px,-5px)}}
+.you.back svg{transform:scaleX(-1)}
+
+/* ----- Le seuil ----- */
+.gate{position:absolute;inset:0;z-index:6;background:radial-gradient(120% 90% at 70% 40%,#123f4c 0%,#071d24 70%);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:2vw;padding:90px 7vw 60px;will-change:transform,opacity}
+.gate h1{font-family:var(--serif);font-weight:350;font-variation-settings:"SOFT" 100,"WONK" 0;font-size:clamp(46px,7.6vw,128px);line-height:.92;letter-spacing:-.03em;color:#fff}
+.gate h1 em{font-style:italic;color:var(--glow);font-variation-settings:"SOFT" 100,"WONK" 1}
+.gate .sub{margin-top:26px;max-width:36ch;font-size:clamp(17px,1.5vw,21px);color:#cfe0de}
+.gate .mod{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--glow);margin-bottom:20px}
+.gate .cue{margin-top:38px;display:inline-flex;align-items:center;gap:14px;font-weight:600;color:var(--glow)}
+.gate .cue i{width:26px;height:42px;border:2px solid currentColor;border-radius:14px;position:relative}
+.gate .cue i::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:currentColor;animation:wheel 1.6s infinite}
+@keyframes wheel{to{transform:translateY(14px);opacity:0}}
+.head{width:min(100%,74vh);justify-self:center}
+.head svg{overflow:visible}
+.door-glow{animation:tw 2.4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 50%}
+
+/* ----- Interface ----- */
+.hud-top{position:fixed;z-index:10;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px clamp(16px,3vw,40px);pointer-events:none}
+.hud-top>*{pointer-events:auto}
+.hud-top img{width:104px;filter:brightness(0) invert(1);opacity:.92}
+.chip{padding:9px 16px;border-radius:99px;border:1.5px solid rgba(255,217,160,.5);color:var(--glow);font-weight:600;font-size:14px;text-decoration:none;background:rgba(7,29,36,.5);backdrop-filter:blur(6px)}
+.chip:hover{background:var(--glow);color:var(--night)}
+.map{position:fixed;z-index:10;left:50%;bottom:calc(var(--g) * .22);transform:translateX(-50%);display:flex;align-items:center;gap:clamp(10px,2.2vw,30px);padding:10px 18px;border-radius:99px;background:rgba(7,29,36,.62);backdrop-filter:blur(8px);opacity:0;transition:opacity .5s}
+.map.on{opacity:1}
+.map::before{content:"";position:absolute;left:26px;right:26px;top:50%;border-top:2px dashed rgba(255,217,160,.35)}
+.map button{position:relative;width:16px;height:16px;border-radius:50%;background:var(--deep);border:2px solid var(--glow);transition:.3s var(--ease)}
+.map button.past{background:var(--glow)}
+.map button[aria-current]{background:var(--orange);border-color:var(--orange);transform:scale(1.5);box-shadow:0 0 18px 4px rgba(255,165,54,.7)}
+.map button span{position:absolute;left:50%;bottom:190%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:600;color:var(--night);background:var(--glow);padding:3px 9px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+.map button:hover span,.map button:focus-visible span{opacity:1}
+
+dialog{border:0;border-radius:24px;padding:0;background:var(--apricot);color:var(--ink);max-width:min(680px,92vw);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(7,29,36,.7);backdrop-filter:blur(4px)}
+dialog .in{padding:clamp(24px,4vw,44px);max-height:82vh;overflow:auto}
+dialog h3{font-family:var(--serif);font-weight:450;font-size:30px;line-height:1.1;margin-bottom:16px}
+dialog p{margin-bottom:.9em}
+dialog button{margin-top:8px;padding:11px 20px;border-radius:99px;background:var(--ink);color:var(--apricot);font-weight:600}
+
+@media (max-width:860px){
+  :root{--g:11vh}
+  .scene{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:0;padding:70px 22px 0}
+  .card{align-self:start;margin:0;max-width:none}
+  .card h2{font-size:clamp(26px,7.4vw,38px);margin:8px 0 10px}
+  .card blockquote{font-size:17px;margin-bottom:8px}
+  .card p{font-size:15px;line-height:1.45}
+  .art{width:min(70vw,34vh);justify-self:end}
+  .art.vid{width:min(60vw,28vh);margin-bottom:calc(var(--g) + 7vh)}
+  .port button{width:54px;height:54px}.port video{border-width:6px}
+  .say{font-size:14px;margin-top:8px;min-height:2.6em}
+  .goals li{padding:9px 14px;font-size:16px}
+  .route button{padding:3px 0;font-size:14px}.route b{width:26px;height:26px}.route::before{left:12px}
+  .concepts{gap:6px}.concepts li{padding:8px 10px;font-size:12.5px;line-height:1.3}.concepts b{font-size:15px;margin:0 0 2px}
+  .you{left:2vw;width:52px}
+  .gate{grid-template-columns:1fr;grid-template-rows:auto 1fr;padding:84px 22px 30px;align-items:start}
+  .gate .sub{margin-top:14px}.gate .cue{margin-top:18px}
+  .head{width:min(80vw,40vh);align-self:end}
+  .hud-top img{width:84px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="hud-top">
+  <a href="../index.html" aria-label="Retour au choix de version"><img src="../assets/logo.svg" alt="IF Paris"></a>
+  <a class="chip" href="../index.html">← 3 versions</a>
+</header>
+<nav class="map" id="map" aria-label="Étapes du voyage"></nav>
+
+<main class="journey" id="journey">
+  <div class="view" id="view">
+    <div class="layer l-far" data-s=".22"></div>
+    <div class="layer l-mid" data-s=".5"></div>
+    <canvas id="sparks" aria-hidden="true"></canvas>
+    <div class="layer l-ground" data-s="1"></div>
+    <div class="world" id="world"></div>
+    <div class="you" id="you" aria-hidden="true"><span class="tagme">Vous</span></div>
+
+    <!-- Le seuil : on entre dans la tête -->
+    <section class="gate" id="gate">
+      <div>
+        <p class="mod">Module 2 · Introduction à la Gestion Mentale</p>
+        <h1>Voyage dans la <em>boîte noire</em></h1>
+        <p class="sub">On dit du cerveau que c’est une boîte noire. La Gestion Mentale propose d’aller voir ce qu’il s’y passe. Entrons.</p>
+        <p class="cue"><i></i>Faites défiler pour entrer</p>
+      </div>
+      <div class="head" aria-hidden="true">
+        <svg viewBox="0 0 600 600">
+          <defs><radialGradient id="dg"><stop offset="0" stop-color="#fff3d6"/><stop offset=".55" stop-color="#ffb04a"/><stop offset="1" stop-color="#ffb04a" stop-opacity="0"/></radialGradient></defs>
+          <g fill="none" stroke="#1f6577" stroke-width="2" stroke-dasharray="3 12" stroke-linecap="round"><circle cx="300" cy="290" r="270"/><circle cx="300" cy="290" r="225"/></g>
+          <path d="M228,590 V478 C150,444 104,364 104,276 C104,154 196,66 314,66 C428,66 506,146 508,250 C508,270 506,286 502,300 L540,364 L508,376 L512,404 L498,416 L506,438 C506,474 474,494 434,492 L404,490 V590Z" fill="#103c49" stroke="#36869c" stroke-width="5" stroke-linejoin="round"/>
+          <g fill="none" stroke="#1f6577" stroke-width="6" stroke-linecap="round"><path d="M160,250 q20,-90 110,-120"/><path d="M190,380 q-30,-50 -22,-100"/><path d="M360,116 q70,20 96,90"/><path d="M250,430 q60,30 130,6"/></g>
+          <circle class="door-glow" cx="306" cy="270" r="150" fill="url(#dg)" opacity=".55"/>
+          <circle id="door" cx="306" cy="270" r="78" fill="#1a5868" stroke="#ffd9a0" stroke-width="6"/>
+          <circle cx="306" cy="270" r="60" fill="#ffd9a0"/>
+          <path d="M306,238 a16,16 0 1 1 -.1,0 M298,262 h16 l8,40 h-32z" fill="#0c2c36"/>
+        </svg>
+      </div>
+    </section>
+  </div>
+</main>
+
+<dialog id="mot"><div class="in"><h3>Le mot d’accueil d’Isabelle Grouffal</h3><div id="mot-txt"></div><form method="dialog"><button>Reprendre le voyage</button></form></div></dialog>
+
+<script src="../assets/content.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); }, $$ = function (s) { return [].slice.call(document.querySelectorAll(s)); };
+  var calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var INK = "#071d24";
+
+  /* ---------- Fabrique de personnages ---------- */
+  var uid = 0;
+  function guy(o) {
+    var c = o.c, d = o.d || "#0c2c36", one = o.eye === 1, a = o.acc || "", s = o.s || 1, delay = (-(uid++ * .7) % 3.2).toFixed(1);
+    var g = '<g transform="translate(' + o.x + "," + o.y + ") scale(" + (o.flip ? -s : s) + "," + s + ')"><g class="bob" style="animation-delay:' + delay + 's">';
+    if (a === "pack") g += '<rect x="-56" y="-78" width="30" height="52" rx="10" fill="' + d + '"/><rect x="-52" y="-58" width="14" height="6" rx="3" fill="#ffd9a0"/>';
+    g += '<ellipse class="foot a" cx="-16" cy="0" rx="13" ry="6.5" fill="' + d + '"/><ellipse class="foot b" cx="16" cy="0" rx="13" ry="6.5" fill="' + d + '"/>';
+    g += '<path d="M-38,-46 q-18,8 -18,26" fill="none" stroke="' + c + '" stroke-width="10" stroke-linecap="round"/>';
+    g += o.wave ? '<path d="M38,-52 q20,-10 22,-34" fill="none" stroke="' + c + '" stroke-width="10" stroke-linecap="round"/>'
+                : '<path d="M38,-46 q18,8 18,26" fill="none" stroke="' + c + '" stroke-width="10" stroke-linecap="round"/>';
+    g += '<path d="M-40,-10 C-48,-62 -30,-106 0,-106 C30,-106 48,-62 40,-10 C38,2 -38,2 -40,-10Z" fill="' + c + '"/>';
+    g += '<ellipse cx="-16" cy="-84" rx="8" ry="14" fill="#fff" opacity=".22" transform="rotate(18 -16 -84)"/>';
+    g += '<g class="lids" style="animation-delay:' + (delay * 1.7) + 's">';
+    if (one) g += '<circle cx="2" cy="-66" r="19" fill="#fff"/><circle class="pupil" cx="4" cy="-66" r="9" fill="' + INK + '"/>';
+    else g += '<circle cx="-12" cy="-66" r="11.5" fill="#fff"/><circle cx="16" cy="-66" r="11.5" fill="#fff"/><circle class="pupil" cx="-10" cy="-66" r="5.5" fill="' + INK + '"/><circle class="pupil" cx="18" cy="-66" r="5.5" fill="' + INK + '"/>';
+    g += "</g>";
+    g += o.open ? '<ellipse cx="3" cy="-38" rx="7" ry="8" fill="' + INK + '"/>' : '<path d="M-7,-42 Q3,-32 13,-42" fill="none" stroke="' + INK + '" stroke-width="4" stroke-linecap="round"/>';
+    if (a === "glasses") g += '<g fill="none" stroke="' + INK + '" stroke-width="4"><circle cx="-12" cy="-66" r="15"/><circle cx="16" cy="-66" r="15"/><path d="M-27,-68 l-12,-4 M31,-68 l10,-4"/></g>';
+    if (a === "scope") g += '<g transform="rotate(-18 20 -66)"><rect x="10" y="-80" width="52" height="24" rx="6" fill="#ffd9a0"/><rect x="58" y="-85" width="14" height="34" rx="4" fill="#ffa536"/></g>';
+    if (a === "gear") g += '<g class="turn"><circle cx="0" cy="-130" r="13" fill="none" stroke="#ffd9a0" stroke-width="9" stroke-dasharray="7 6.6"/><circle cx="0" cy="-130" r="8" fill="none" stroke="#ffd9a0" stroke-width="4"/></g>';
+    if (a === "spark") g += '<path d="M0,-106 v-14" stroke="' + d + '" stroke-width="4"/><path class="twinkle" d="M0,-152 l6,14 14,4 -14,5 -6,14 -6,-14 -14,-5 14,-4z" fill="#fff3d6"/>';
+    if (a === "sprout") g += '<path d="M0,-106 q-2,-14 -14,-18 M0,-106 q4,-12 14,-12" fill="none" stroke="' + d + '" stroke-width="4" stroke-linecap="round"/>';
+    return g + "</g></g>";
+  }
+  var COL = { teal: ["#5fc2d6", "#1d5566"], orange: ["#ffa536", "#a9541a"], pink: ["#ff8fa3", "#a8324b"], lilac: ["#b9a7ff", "#4a3a9c"], lime: ["#d8f26a", "#5d7a16"], cream: ["#ffd9a0", "#a9661a"] };
+  function G(k, o) { o.c = COL[k][0]; o.d = COL[k][1]; return guy(o); }
+  var sign = function (x, y, w, t, sz) {
+    return '<g><rect x="' + (x - w / 2) + '" y="' + (y - 20) + '" width="' + w + '" height="36" rx="8" fill="#ffd9a0"/><text x="' + x + '" y="' + (y + 5) + '" text-anchor="middle" font-size="' + (sz || 18) + '" font-weight="600" fill="' + INK + '">' + t + "</text></g>";
+  };
+
+  /* ---------- Illustrations des six lieux (viewBox 600 × 520, le sol est en bas) ---------- */
+  var ART = [
+    // 1. La boîte noire ouverte
+    '<defs><linearGradient id="ray" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".75"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></linearGradient></defs>' +
+    '<path d="M214,330 L120,20 H500 L406,330Z" fill="url(#ray)"/>' +
+    '<g class="rise"><circle cx="270" cy="250" r="16" fill="#ff8fa3"/></g><g class="rise" style="animation-delay:-1.6s"><path d="M330,230 l18,32 h-36z" fill="#b9a7ff"/></g>' +
+    '<g class="rise" style="animation-delay:-3.2s"><path d="M296,246 v-34 l26,-6 v32" fill="none" stroke="#d8f26a" stroke-width="6" stroke-linecap="round"/><circle cx="288" cy="248" r="9" fill="#d8f26a"/><circle cx="314" cy="240" r="9" fill="#d8f26a"/></g>' +
+    '<g class="rise" style="animation-delay:-4.2s"><rect x="336" y="250" width="44" height="28" rx="10" fill="#fff3d6"/><path d="M346,264 h24" stroke="#071d24" stroke-width="4" stroke-linecap="round"/></g>' +
+    '<path d="M196,330 L130,286 L190,262 L236,318Z" fill="#0c2c36" stroke="#36869c" stroke-width="4" stroke-linejoin="round"/><path d="M424,330 L490,286 L430,262 L384,318Z" fill="#0c2c36" stroke="#36869c" stroke-width="4" stroke-linejoin="round"/>' +
+    G("pink", { x: 310, y: 372, s: .8, open: 1, wave: 1, acc: "sprout" }) +
+    '<rect x="196" y="326" width="228" height="194" rx="10" fill="#071d24" stroke="#36869c" stroke-width="4"/>' + sign(310, 430, 170, "La boîte noire") +
+    G("teal", { x: 96, y: 516, s: 1.15, eye: 1, acc: "scope" }) + G("lime", { x: 520, y: 516, s: .8, flip: 1, acc: "sprout" }),
+
+    // 2. L'atelier du dialogue
+    '<path d="M90,520 V190 Q300,90 510,190 V520" fill="none" stroke="#36869c" stroke-width="10" stroke-linecap="round"/>' +
+    '<path d="M92,196 Q300,280 508,196" fill="none" stroke="#ffd9a0" stroke-width="2.5"/>' +
+    [150, 210, 270, 330, 390, 450].map(function (x, i) { var y = 196 + 42 * Math.sin((x - 92) / 416 * Math.PI); return '<circle class="twinkle" style="animation-delay:-' + i * .4 + 's" cx="' + x + '" cy="' + (y + 12) + '" r="9" fill="' + ["#ffa536", "#ff8fa3", "#d8f26a", "#b9a7ff", "#ffa536", "#ff8fa3"][i] + '"/>'; }).join("") +
+    sign(300, 150, 230, "L’atelier du dialogue") +
+    '<g class="bob"><path d="M96,300 h190 a16,16 0 0 1 16,16 v44 a16,16 0 0 1 -16,16 h-90 l-24,24 v-24 h-76 a16,16 0 0 1 -16,-16 v-44 a16,16 0 0 1 16,-16z" fill="#fff3d6"/><text x="191" y="334" text-anchor="middle" font-size="19" font-style="italic" fill="#071d24">« Et dans votre tête,</text><text x="191" y="358" text-anchor="middle" font-size="19" font-style="italic" fill="#071d24">ça se passe comment ? »</text></g>' +
+    '<g class="bob" style="animation-delay:-1.4s"><path d="M366,246 h130 a16,16 0 0 1 16,16 v50 a16,16 0 0 1 -16,16 h-40 v24 l-24,-24 h-66 a16,16 0 0 1 -16,-16 v-50 a16,16 0 0 1 16,-16z" fill="#1a5868" stroke="#ffd9a0" stroke-width="3"/><circle cx="392" cy="287" r="13" fill="#ff8fa3"/><path d="M420,300 l14,-26 14,26z" fill="#b9a7ff"/><path d="M468,298 v-24 l18,-4 v22" fill="none" stroke="#d8f26a" stroke-width="5" stroke-linecap="round"/><circle cx="463" cy="299" r="6" fill="#d8f26a"/><circle cx="481" cy="293" r="6" fill="#d8f26a"/></g>' +
+    G("orange", { x: 210, y: 516, s: 1.1 }) + G("lilac", { x: 410, y: 516, s: 1.1, flip: 1, open: 1, acc: "sprout" }),
+
+    // 3. Le phare du fondateur
+    '<defs><linearGradient id="bm" x1="0" x2="1"><stop offset="0" stop-color="#fff3d6" stop-opacity=".9"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/></linearGradient></defs>' +
+    '<g class="beam"><path d="M300,132 L640,60 V204Z" fill="url(#bm)"/></g>' +
+    '<path d="M250,520 L270,170 H330 L350,520Z" fill="#fff3d6"/><path d="M264,290 H336 L340,360 H260Z M256,430 H344 L348,500 H252Z" fill="#36869c"/>' +
+    '<rect x="256" y="160" width="88" height="14" rx="4" fill="#0c2c36"/><rect x="272" y="100" width="56" height="62" rx="6" fill="#ffd9a0" stroke="#0c2c36" stroke-width="5"/><circle class="twinkle" cx="300" cy="132" r="16" fill="#fff"/><path d="M262,102 L300,62 L338,102Z" fill="#ffa536"/>' +
+    '<path d="M286,520 v-56 a14,14 0 0 1 28,0 v56z" fill="#0c2c36"/>' +
+    '<path d="M150,520 q40,-60 100,-30 q20,-30 60,-16 q50,-30 110,10 q40,-10 60,36z" fill="#0c2c36"/>' +
+    sign(300, 400, 150, "1920 – 2010", 20) +
+    G("cream", { x: 130, y: 516, s: .95, wave: 1 }) + G("teal", { x: 486, y: 516, s: .75, flip: 1, acc: "sprout" }),
+
+    // 4. La bibliothèque
+    '<path d="M70,520 V150 Q300,30 530,150 V520Z" fill="#0c2c36" stroke="#36869c" stroke-width="5"/>' +
+    [0, 1, 2].map(function (r) { var y = 190 + r * 96, out = '<path d="M100,' + (y + 70) + ' H500" stroke="#36869c" stroke-width="5"/>'; for (var i = 0, x = 110; x < 480; i++) { var w = 16 + (i * 7 + r * 5) % 18, h = 44 + (i * 13 + r * 9) % 24, col = ["#5fc2d6", "#ffa536", "#ff8fa3", "#b9a7ff", "#d8f26a", "#ffd9a0"][(i + r * 2) % 6]; if (!(r === 1 && x > 220 && x < 380)) out += '<rect x="' + x + '" y="' + (y + 68 - h) + '" width="' + w + '" height="' + h + '" rx="3" fill="' + col + '" opacity=".85"/>'; x += w + 5; } return out; }).join("") +
+    '<g class="bob"><rect x="232" y="230" width="136" height="176" rx="8" fill="#ffa536" stroke="#071d24" stroke-width="4"/><rect x="232" y="230" width="16" height="176" fill="#a9541a"/><text x="308" y="286" text-anchor="middle" font-size="21" font-weight="600" fill="#071d24">Les profils</text><text x="308" y="312" text-anchor="middle" font-size="21" font-weight="600" fill="#071d24">pédagogiques</text><text x="308" y="372" text-anchor="middle" font-size="30" font-style="italic" fill="#071d24">1980</text></g>' +
+    '<rect x="120" y="486" width="150" height="34" rx="5" fill="#b9a7ff"/><rect x="134" y="456" width="124" height="30" rx="5" fill="#5fc2d6"/>' +
+    G("orange", { x: 196, y: 456, s: .9, acc: "pack" }) + G("pink", { x: 440, y: 516, s: .85, flip: 1, acc: "glasses" }),
+
+    // 5. La place des gestes mentaux
+    '<path d="M10,150 Q300,230 590,150" fill="none" stroke="#ffd9a0" stroke-width="2.5"/>' +
+    [40, 100, 160, 220, 280, 340, 400, 460, 520].map(function (x, i) { var y = 150 + 40 * Math.sin((x - 10) / 580 * Math.PI); return '<path d="M' + x + "," + y + " l14,34 l14,-" + (34 - (i < 4 ? -2 : 2)) + 'z" fill="' + ["#ffa536", "#ff8fa3", "#d8f26a", "#b9a7ff", "#5fc2d6"][i % 5] + '"/>'; }).join("") +
+    '<rect x="6" y="470" width="588" height="50" rx="12" fill="#0c2c36" stroke="#36869c" stroke-width="4"/>' +
+    [["teal", "Attention", { eye: 1, acc: "scope" }], ["orange", "Mémorisation", { acc: "pack" }], ["lilac", "Compréhension", { acc: "glasses" }], ["lime", "Réflexion", { acc: "gear" }], ["pink", "Imagination créatrice", { acc: "spark", wave: 1, open: 1 }]].map(function (p, i) {
+      var x = 66 + i * 117, o = p[2]; o.x = x; o.y = 470; o.s = .9;
+      var w = p[1].split(" "), l2 = w.length > 1 ? w.pop() : "";
+      return G(p[0], o) + '<text x="' + x + '" y="' + (l2 ? 492 : 501) + '" text-anchor="middle" font-size="14.5" font-weight="600" fill="#ffd9a0">' + (l2 ? w.join(" ") : p[1]) + "</text>" + (l2 ? '<text x="' + x + '" y="510" text-anchor="middle" font-size="14.5" font-weight="600" fill="#ffd9a0">' + l2 + "</text>" : "");
+    }).join(""),
+
+    // 6. L'embarcadère
+    '<g class="float"><path d="M300,20 C410,20 470,100 470,180 C470,260 380,310 350,360 H250 C220,310 130,260 130,180 C130,100 190,20 300,20Z" fill="#ffa536"/>' +
+    '<path d="M300,20 C350,60 366,250 330,360 H270 C234,250 250,60 300,20Z" fill="#ffd9a0"/><path d="M196,62 C150,150 190,270 250,360 M404,62 C450,150 410,270 350,360" fill="none" stroke="#a9541a" stroke-width="4"/>' +
+    '<path d="M256,360 L266,420 M344,360 L334,420" stroke="#ffd9a0" stroke-width="4"/>' +
+    G("cream", { x: 300, y: 462, s: .62, wave: 1, open: 1 }) +
+    '<path d="M254,418 h92 l-8,58 a10,10 0 0 1 -10,8 h-56 a10,10 0 0 1 -10,-8z" fill="#a9541a" stroke="#071d24" stroke-width="4"/><path d="M260,440 h80 M264,460 h72" stroke="#071d24" stroke-width="3" opacity=".5"/>' +
+    '<path d="M346,418 l40,-50" stroke="#ffd9a0" stroke-width="3"/><path d="M386,366 l96,-10 -20,28 24,24 -96,8z" fill="#ff8fa3"/><text x="432" y="394" text-anchor="middle" font-size="19" font-weight="600" fill="#071d24" transform="rotate(-4 432 394)">À vous !</text></g>' +
+    '<rect x="150" y="500" width="300" height="20" rx="6" fill="#0c2c36" stroke="#36869c" stroke-width="4"/><path d="M180,520 v-20 M420,520 v-20" stroke="#36869c" stroke-width="4"/>' +
+    G("teal", { x: 96, y: 516, s: .85, wave: 1, acc: "sprout" }) + G("lilac", { x: 520, y: 516, s: .8, flip: 1, wave: 1 })
+  ];
+  var PLACES = ["La boîte noire", "L’atelier du dialogue", "Le phare du fondateur", "La bibliothèque", "La place des quatre concepts", "L’embarcadère"];
+  var HEADS = ["Qu’est-ce que la <em>Gestion Mentale</em> ?", "Les <em>outils</em> de la Gestion Mentale", "Antoine de <em>La Garanderie</em>, le fondateur", "La <em>bibliographie</em>", "Les <em>4 concepts</em> fondamentaux", "Réactivation et <em>mise en projet</em>"];
+
+  /* ---------- Construction des scènes ---------- */
+  var playBtn = function (id) { return '<button data-v="' + id + '" aria-label="Lire ou mettre en pause la vidéo"><svg class="pl" viewBox="0 0 24 24"><path d="M7 4v16l14-8z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>'; };
+  var html = "";
+  html += '<section class="scene" data-name="L’accueil"><div class="card"><p class="place">Le hublot d’accueil</p><h2>Bienvenue <em>à l’intérieur</em></h2>' +
+    "<p>« " + IFP.bienvenue[0].replace("Bonjour, et b", "B") + " » Isabelle Grouffal, formatrice en Gestion Mentale depuis plus de 20 ans, vous guide. Ce module a deux objectifs :</p>" +
+    '<ol class="goals">' + IFP.objectifs.map(function (o) { return "<li>" + o + "</li>"; }).join("") + "</ol>" +
+    '<button class="link" id="open-mot">Lire son mot d’accueil</button></div>' +
+    '<div class="art vid"><div class="port"><video id="v1" playsinline preload="metadata" poster="../assets/media/objectifs-poster.jpg" src="../assets/media/objectifs.mp4"></video><i class="rivet"></i>' + playBtn("v1") + '</div><p class="say" id="c1"></p></div></section>';
+  html += '<section class="scene" data-name="La carte"><div class="card"><p class="place">La carte du voyage</p><h2>Six lieux <em>à traverser</em></h2><ol class="route">' +
+    IFP.plan.map(function (p, i) { return '<li><button data-go="' + (i + 2) + '"><b>' + (i + 1) + "</b><span>" + p.titre + "</span></button></li>"; }).join("") + "</ol></div>" +
+    '<div class="art vid"><div class="port"><video id="v2" playsinline preload="metadata" poster="../assets/media/plan-poster.jpg" src="../assets/media/plan.mp4"></video><i class="rivet"></i>' + playBtn("v2") + '</div><p class="say" id="c2"></p></div></section>';
+  IFP.plan.forEach(function (p, i) {
+    var body = i === 4
+      ? '<ol class="concepts">' + IFP.concepts.map(function (c) { return "<li><b>" + c.nom + "</b>" + c.texte + "</li>"; }).join("") + "</ol>"
+      : (p.apercu.charAt(0) === "«" ? "<blockquote>" + p.apercu.replace(/[«»]/g, "").trim() + "</blockquote>" : "<p>" + p.apercu + "</p>") + "<p>" + p.detail + "</p>";
+    if (i === 5) body += '<a class="link" href="../index.html">Fin du voyage : comparer les trois versions →</a>';
+    html += '<section class="scene" data-name="' + PLACES[i] + '"><div class="card"><p class="place"><b>' + (i + 1) + "</b>" + PLACES[i] + "</p><h2>" + HEADS[i] + "</h2>" + body +
+      '</div><div class="art"><svg viewBox="0 0 600 520" role="img" aria-label="' + PLACES[i] + '">' + ART[i] + "</svg></div></section>";
+  });
+  $("#world").innerHTML = html;
+  $("#you").insertAdjacentHTML("beforeend", '<svg viewBox="-60 -150 120 160">' + G("cream", { x: 0, y: 0, s: 1, acc: "sprout" }) + "</svg>");
+  $("#mot-txt").innerHTML = IFP.bienvenue.map(function (p) { return "<p>" + p + "</p>"; }).join("");
+  $("#open-mot").addEventListener("click", function () { $("#mot").showModal(); });
+
+  var scenes = $$(".scene"), N = scenes.length;
+  $("#map").innerHTML = scenes.map(function (s, i) { return '<button data-go="' + i + '"><span>' + s.dataset.name + "</span></button>"; }).join("");
+  var dots = $$("#map button");
+
+  /* ---------- Défilement : on entre, puis on avance ---------- */
+  var journey = $("#journey"), world = $("#world"), gate = $("#gate"), you = $("#you"), layers = $$(".layer");
+  var STEP = 1.15, vw, vh, cur = -1, x = 0, lastY = 0, walkT;
+  function size() {
+    vw = innerWidth; vh = innerHeight;
+    journey.style.height = ((1 + (N - 1) * STEP) * vh + vh) + "px";
+    var d = $("#door").getBoundingClientRect(), g = gate.getBoundingClientRect();
+    if (d.width && !gate.dataset.open) gate.style.transformOrigin = (d.left + d.width / 2 - g.left) + "px " + (d.top + d.height / 2 - g.top) + "px";
+    frame();
+  }
+  function yFor(i) { return (1 + i * STEP) * vh; }
+  function frame() {
+    var y = Math.max(0, scrollY - journey.offsetTop), u = y / vh;
+    // 1. Le seuil : zoom dans la porte
+    var k = Math.min(1, u);
+    if (k < 1) {
+      var e = k * k * k;
+      gate.style.transform = "scale(" + (1 + e * 26) + ")";
+      gate.style.opacity = k < .7 ? 1 : 1 - (k - .7) / .3;
+      gate.style.visibility = "visible"; delete gate.dataset.open;
+    } else { gate.style.visibility = "hidden"; gate.dataset.open = 1; }
+    // 2. Le monde
+    var f = Math.max(0, Math.min(N - 1, (u - 1) / STEP));
+    x = f * vw;
+    world.style.transform = "translate3d(" + (-x) + "px,0,0)";
+    layers.forEach(function (l) { l.style.backgroundPositionX = (-x * l.dataset.s) + "px"; });
+    var i = k < .75 ? -1 : Math.round(f);
+    if (i !== cur) {
+      cur = i;
+      scenes.forEach(function (s, n) { s.classList.toggle("here", n === i); });
+      dots.forEach(function (b, n) { b.classList.toggle("past", n < i); if (n === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+      $$("video").forEach(function (v) { v.pause(); });
+      $("#map").classList.toggle("on", i >= 0); you.style.opacity = i >= 0 ? 1 : 0;
+    }
+    // Le voyageur marche quand on défile
+    if (Math.abs(y - lastY) > 1) {
+      you.classList.add("walk"); you.classList.toggle("back", y < lastY);
+      clearTimeout(walkT); walkT = setTimeout(function () { you.classList.remove("walk", "back"); }, 160);
+    }
+    lastY = y;
+  }
+  function go(i) { scrollTo({ top: journey.offsetTop + (i < 0 ? 0 : yFor(Math.max(0, Math.min(N - 1, i)))), behavior: calm ? "auto" : "smooth" }); }
+  addEventListener("scroll", frame, { passive: true });
+  addEventListener("resize", size);
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-go]"); if (b) go(+b.dataset.go); });
+  document.addEventListener("keydown", function (e) {
+    if ($("#mot").open) return;
+    if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); go(cur + 1); }
+    if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(cur - 1); }
+  });
+  $(".gate .cue").addEventListener("click", function () { go(0); });
+
+  /* ---------- Vidéos ---------- */
+  $$(".port button").forEach(function (b) {
+    var v = $("#" + b.dataset.v), box = b.parentNode;
+    b.addEventListener("click", function () { v.paused ? v.play() : v.pause(); });
+    v.addEventListener("click", function () { b.click(); });
+    ["play", "pause", "ended"].forEach(function (ev) { v.addEventListener(ev, function () { box.classList.toggle("playing", !v.paused && !v.ended); }); });
+  });
+  var gl = $$(".goals li");
+  IFP.captions($("#v1"), $("#c1"), IFP.cues.objectifs, function (t, on) {
+    gl[0].classList.toggle("lit", on && t >= 5.5 && t < 12.2); gl[1].classList.toggle("lit", on && t >= 12.2 && t < 15.2);
+  });
+  var rl = $$(".route li");
+  IFP.captions($("#v2"), $("#c2"), IFP.cues.plan, function (t, on) {
+    var s = on ? IFP.stepAt(t) : -1; rl.forEach(function (li, n) { li.classList.toggle("live", n === s); });
+  });
+
+  /* ---------- Les regards suivent le curseur ---------- */
+  addEventListener("pointermove", function (e) {
+    document.documentElement.style.setProperty("--px", ((e.clientX / innerWidth - .5) * 7).toFixed(1) + "px");
+    document.documentElement.style.setProperty("--py", ((e.clientY / innerHeight - .5) * 6).toFixed(1) + "px");
+  });
+
+  /* ---------- Étincelles : l'influx qui circule ---------- */
+  var cv = $("#sparks"), ctx = cv.getContext("2d"), P = [], dpr = Math.min(2, devicePixelRatio || 1);
+  function fit() { cv.width = cv.clientWidth * dpr; cv.height = cv.clientHeight * dpr; }
+  for (var n = 0; n < 70; n++) P.push({ x: Math.random(), y: Math.random() * .8, r: .6 + Math.random() * 2.2, s: .2 + Math.random() * .8, p: Math.random() * 6.28, h: Math.random() < .25 });
+  function draw(t) {
+    var w = cv.width, h = cv.height; ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < P.length; i++) {
+      var p = P[i], px = (((p.x * w * 1.4 - x * dpr * p.s * .6 + t * .012 * p.s * dpr) % (w * 1.2)) + w * 1.2) % (w * 1.2) - w * .1;
+      var py = p.y * h + Math.sin(t * .0006 * p.s + p.p) * 22 * dpr, a = .35 + .45 * Math.sin(t * .002 * p.s + p.p);
+      ctx.globalAlpha = Math.max(.08, a); ctx.fillStyle = p.h ? "#ffb04a" : "#fff3d6";
+      ctx.beginPath(); ctx.arc(px, py, p.r * dpr, 0, 6.28); ctx.fill();
+      if (p.h) { ctx.globalAlpha *= .22; ctx.beginPath(); ctx.arc(px, py, p.r * dpr * 4, 0, 6.28); ctx.fill(); }
+    }
+    if (!calm) requestAnimationFrame(draw);
+  }
+  addEventListener("resize", fit); fit(); requestAnimationFrame(draw);
+
+  size(); addEventListener("load", size);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+})();
+</script>
+</body>
+</html>
